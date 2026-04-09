@@ -41,7 +41,7 @@ struct QuestionDetailView: View {
                 }
                 .padding(16)
             }
-            .background(ThemeConstants.white)
+            .background(ThemeConstants.backgroundColor)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden()
             .toolbar {
@@ -65,12 +65,12 @@ struct QuestionDetailView: View {
             Text("Expert Response on")
                 .font(.title3)
                 .fontWeight(.regular)
-                .foregroundColor(.gray)
+                .foregroundColor(ThemeConstants.secondaryText)
             
             Text(viewModel.question.question)
                 .font(.title2)
                 .fontWeight(.bold)
-                .foregroundColor(.black)
+                .foregroundColor(ThemeConstants.text)
                 .lineLimit(nil)
             
             Divider()
@@ -78,7 +78,7 @@ struct QuestionDetailView: View {
             
             Text("Asked on \(formattedDate(viewModel.question.createdAt))")
                 .font(.caption)
-                .foregroundColor(.gray)
+                .foregroundColor(ThemeConstants.secondaryText)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
@@ -97,15 +97,15 @@ struct QuestionDetailView: View {
                 Text(title)
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
-                
+                    .foregroundColor(ThemeConstants.text)
+
                 Spacer()
             }
             
             Text(content)
                 .font(.body)
                 .lineHeight(1.6)
-                .foregroundColor(.black)
+                .foregroundColor(ThemeConstants.text)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -68,17 +68,18 @@ struct NCLEXExpertView: View {
             Text("No Questions Yet")
                 .font(.title2)
                 .fontWeight(.semibold)
+                .foregroundColor(ThemeConstants.text)
             
             Text("Tap the floating AI button to ask your first medical question")
                 .font(.body)
-                .foregroundColor(.gray)
+                .foregroundColor(ThemeConstants.secondaryText)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(ThemeConstants.white)
+        .background(ThemeConstants.backgroundColor)
     }
     
     private var listView: some View {
@@ -89,12 +90,12 @@ struct NCLEXExpertView: View {
                         Text(question.question)
                             .font(.body)
                             .fontWeight(.semibold)
-                            .foregroundColor(.black)
+                            .foregroundColor(ThemeConstants.text)
                             .lineLimit(2)
                         
                         Text(formattedDate(question.createdAt))
                             .font(.caption)
-                            .foregroundColor(.gray)
+                            .foregroundColor(ThemeConstants.secondaryText)
                     }
                     .padding(.vertical, 8)
                 }
@@ -102,7 +103,7 @@ struct NCLEXExpertView: View {
             .onDelete(perform: deleteQuestion)
         }
         .listStyle(.plain)
-        .background(ThemeConstants.white)
+        .background(ThemeConstants.backgroundColor)
     }
     
     private var floatingAIButton: some View {
@@ -148,10 +149,10 @@ struct NCLEXExpertView: View {
                 Text("Generating Expert Response...")
                     .font(.body)
                     .fontWeight(.semibold)
-                    .foregroundColor(.white)
+                    .foregroundColor(ThemeConstants.text)
             }
             .padding(32)
-            .background(Color.black.opacity(0.8))
+            .background(ThemeConstants.backgroundColor.opacity(0.95))
             .cornerRadius(16)
         }
     }
@@ -162,10 +163,11 @@ struct NCLEXExpertView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Ask an NCLEX Question")
                         .font(.headline)
+                        .foregroundColor(ThemeConstants.text)
                     
                     Text("Enter your medical or nursing question for expert analysis")
                         .font(.caption)
-                        .foregroundColor(.gray)
+                        .foregroundColor(ThemeConstants.secondaryText)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -175,7 +177,7 @@ struct NCLEXExpertView: View {
                     .padding(8)
                     .background(ThemeConstants.lightThemeTint)
                     .cornerRadius(8)
-                    .foregroundStyle(viewModel.isLoading ? Color.gray : Color.primary)
+                    .foregroundStyle(viewModel.isLoading ? ThemeConstants.secondaryText : ThemeConstants.text)
                     .disabled(viewModel.isLoading ? true : false)
                 
                 Button(action: submitQuestion) {
@@ -201,9 +203,10 @@ struct NCLEXExpertView: View {
                         questionInput = ""
                     }
                     .disabled(viewModel.isLoading)
+                    .foregroundColor(ThemeConstants.primaryRed)
                 }
             }
-            .background(ThemeConstants.white)
+            .background(ThemeConstants.backgroundColor)
         }
         .interactiveDismissDisabled(viewModel.isLoading)
     }

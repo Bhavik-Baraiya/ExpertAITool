@@ -19,18 +19,48 @@ struct ThemeConstants {
     /// Used for: Borders, secondary accents, dividers
     static let accentRed = Color(red: 1.0, green: 107/255, blue: 107/255) // #FF6B6B
     
-    // MARK: - Background Colors
-    /// Main scaffold background - Pure white
+    // MARK: - Background Colors (Adaptive for Dark Mode)
+    /// Main scaffold background - Adaptive white/dark background
     /// Used for: Primary app backgrounds, cards
-    static let white = Color.white // #FFFFFF
+    static let backgroundColor: Color = {
+        if #available(iOS 17, *) {
+            return Color(uiColor: UIColor { traitCollection in
+                traitCollection.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
+                    : UIColor.white
+            })
+        } else {
+            return Color.white
+        }
+    }()
     
-    /// Light theme variant (10% opacity of primary red over white)
+    /// Light theme variant (10% opacity of primary red)
     /// Used for: Input fields, data display containers, subtle overlays
-    static let lightThemeTint = primaryRed.opacity(0.1) // 10% opacity
+    static let lightThemeTint: Color = {
+        if #available(iOS 17, *) {
+            return Color(uiColor: UIColor { traitCollection in
+                traitCollection.userInterfaceStyle == .dark
+                    ? UIColor(red: 1.0, green: 59/255, blue: 48/255, alpha: 0.15)
+                    : UIColor(red: 1.0, green: 59/255, blue: 48/255, alpha: 0.1)
+            })
+        } else {
+            return Color(red: 1.0, green: 59/255, blue: 48/255)
+        }
+    }()
     
-    /// Light theme variant (5% opacity of primary red over white)
+    /// Light theme variant (5% opacity of primary red)
     /// Used for: Very subtle backgrounds, section cards
-    static let lightThemeTintSubtle = primaryRed.opacity(0.05) // 5% opacity
+    static let lightThemeTintSubtle: Color = {
+        if #available(iOS 17, *) {
+            return Color(uiColor: UIColor { traitCollection in
+                traitCollection.userInterfaceStyle == .dark
+                    ? UIColor(red: 1.0, green: 59/255, blue: 48/255, alpha: 0.08)
+                    : UIColor(red: 1.0, green: 59/255, blue: 48/255, alpha: 0.05)
+            })
+        } else {
+            return Color(red: 1.0, green: 59/255, blue: 48/255)
+        }
+    }()
     
     /// Background tint - Light pink tone
     /// Deprecated: Use lightThemeTint instead for consistency
@@ -42,10 +72,46 @@ struct ThemeConstants {
     @available(*, deprecated, renamed: "lightThemeTintSubtle")
     static let sectionCardBg = Color(red: 1.0, green: 245/255, blue: 245/255) // #FFF5F5
     
-    // MARK: - Semantic Colors
-    static let text = Color.black
-    static let secondaryText = Color.gray
-    static let border = accentRed.opacity(0.2)
+    /// Deprecated: Use 'text' property for dynamic colors
+    @available(*, deprecated, renamed: "text")
+    static let white = Color.white
+    
+    // MARK: - Semantic Colors (Adaptive for Dark Mode)
+    static let text: Color = {
+        if #available(iOS 17, *) {
+            return Color(uiColor: UIColor { traitCollection in
+                traitCollection.userInterfaceStyle == .dark
+                    ? UIColor.white
+                    : UIColor.black
+            })
+        } else {
+            return Color.black
+        }
+    }()
+    
+    static let secondaryText: Color = {
+        if #available(iOS 17, *) {
+            return Color(uiColor: UIColor { traitCollection in
+                traitCollection.userInterfaceStyle == .dark
+                    ? UIColor.lightGray
+                    : UIColor.gray
+            })
+        } else {
+            return Color.gray
+        }
+    }()
+    
+    static let border: Color = {
+        if #available(iOS 17, *) {
+            return Color(uiColor: UIColor { traitCollection in
+                traitCollection.userInterfaceStyle == .dark
+                    ? UIColor(red: 1.0, green: 107/255, blue: 107/255, alpha: 0.3)
+                    : UIColor(red: 1.0, green: 107/255, blue: 107/255, alpha: 0.2)
+            })
+        } else {
+            return accentRed.opacity(0.2)
+        }
+    }()
     
     // MARK: - Component Sizes
     static let cornerRadius: CGFloat = 12
