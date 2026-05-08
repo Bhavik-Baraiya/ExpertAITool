@@ -27,7 +27,7 @@ struct NCLEXExpertView: View {
                         listView
                     }
                 }
-                .navigationTitle("NCLEX Expert")
+                .navigationTitle("CCM Tutor")
                 .navigationBarTitleDisplayMode(.inline)
             }
             
@@ -53,7 +53,9 @@ struct NCLEXExpertView: View {
             askQuestionSheet
         }
         .sheet(isPresented: $showOutputSheet) {
-            QuestionDetailView(viewModel: QuestionDetailViewModel(question: viewModel.questions.first!))
+            if let firstQuestion = viewModel.questions.first {
+                QuestionDetailView(viewModel: QuestionDetailViewModel(question: firstQuestion))
+            }
         }
     }
     
@@ -70,7 +72,7 @@ struct NCLEXExpertView: View {
                 .fontWeight(.semibold)
                 .foregroundColor(ThemeConstants.text)
             
-            Text("Tap the floating AI button to ask your first medical question")
+            Text("Tap the floating  AI button below to start decoding your first question.")
                 .font(.body)
                 .foregroundColor(ThemeConstants.secondaryText)
                 .multilineTextAlignment(.center)
@@ -161,11 +163,11 @@ struct NCLEXExpertView: View {
         NavigationStack {
             VStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Ask an NCLEX Question")
+                    Text("Decode Your Question")
                         .font(.headline)
                         .foregroundColor(ThemeConstants.text)
                     
-                    Text("Enter your medical or nursing question for expert analysis")
+                    Text("Get simplified explanations, clinical rationale, decoding strategies, and exam-focused tips for medical and nursing questions.")
                         .font(.caption)
                         .foregroundColor(ThemeConstants.secondaryText)
                 }
@@ -181,7 +183,7 @@ struct NCLEXExpertView: View {
                     .disabled(viewModel.isLoading ? true : false)
                 
                 Button(action: submitQuestion) {
-                    Text(viewModel.isLoading ? "Generating..." : "Submit Question")
+                    Text(viewModel.isLoading ? "Decoding..." : "Submit Question")
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)

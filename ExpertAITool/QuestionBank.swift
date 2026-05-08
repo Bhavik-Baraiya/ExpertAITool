@@ -13,18 +13,20 @@ final class QuestionBank {
     var userId: String
     var questionId: UUID
     var question: String
-    var summaryAnswer: String
+    var decodingTechnique: String
+    var correctAnswer: String
     var rationale: String
-    var nclexTip: String
+    var exanTip: String
     var createdAt: Date
     
-    init(userId: String, questionId: UUID, question: String, summaryAnswer: String, rationale: String, nclexTip: String, createdAt: Date) {
+    init(userId: String, questionId: UUID, question: String, decodingTechnique: String,correctAnswer: String, rationale: String, examTip: String, createdAt: Date) {
         self.userId = userId
         self.questionId = questionId
         self.question = question
-        self.summaryAnswer = summaryAnswer
+        self.decodingTechnique = decodingTechnique
+        self.correctAnswer = correctAnswer
         self.rationale = rationale
-        self.nclexTip = nclexTip
+        self.exanTip = examTip
         self.createdAt = createdAt
     }
 }

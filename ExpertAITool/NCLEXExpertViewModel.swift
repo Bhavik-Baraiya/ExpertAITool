@@ -42,15 +42,14 @@ class NCLEXExpertViewModel {
             let aiResponse = try await aiService.generateExpertResponse(for: questionText)
             
             // Create new QuestionBank record
-            let newQuestion = QuestionBank(
-                userId: currentUserID,
-                questionId: UUID(),
-                question: questionText,
-                summaryAnswer: aiResponse.summaryAnswer,
-                rationale: aiResponse.rationale,
-                nclexTip: aiResponse.nclexTip,
-                createdAt: Date()
-            )
+            
+            let newQuestion = QuestionBank(userId: currentUserID,
+                                           questionId: UUID(), question: questionText,
+                                           decodingTechnique: aiResponse.decodingTechnique,
+                                           correctAnswer: aiResponse.correctAnswer,
+                                           rationale: aiResponse.rationale,
+                                           examTip: aiResponse.examTip,
+                                           createdAt: Date())
             
             // Insert into SwiftData
             modelContext.insert(newQuestion)

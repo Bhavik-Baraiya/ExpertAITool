@@ -10,7 +10,10 @@ import SwiftData
 
 struct ContentView: View {
     var body: some View {
-        NCLEXExpertView(questionInput: "The nurse caring for a client with heart failure who has been receiving intravenous (IV) diuretics suspects that the client is experiencing a fluid volume deficit. Which assessment finding would the nurse note in a client with this condition?")
+        NCLEXExpertView(questionInput: """
+        A 45-year-old client has undergone a below-the-knee amputation and expresses concern about returning to work as a construction worker. What should the case manager prioritize when coordinating prosthetic services? \n A. Aesthetic appearance of prosthesis \n B. Cost-effectiveness \n C. Work-related functional needs and rehabilitation \n D. Emotional support with peers with similar experiences
+        """
+        )
     }
 }
 

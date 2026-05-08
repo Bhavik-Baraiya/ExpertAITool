@@ -19,22 +19,28 @@ struct QuestionDetailView: View {
                     // Header section
                     headerSection
                     
-                    // Summary Answer section
+                    // Decoding technique
                     contentSection(
-                        title: "Summary Answer",
-                        content: viewModel.question.summaryAnswer
+                        title: "Decoding technique",
+                        content: viewModel.question.decodingTechnique
                     )
                     
-                    // Rationale section
+                    // Correct Answer
+                    contentSection(
+                        title: "Correct Answer",
+                        content: viewModel.question.correctAnswer
+                    )
+                    
+                    // Rationale
                     contentSection(
                         title: "Rationale",
                         content: viewModel.question.rationale
                     )
                     
-                    // NCLEX Tip section
+                    // Exam tip
                     contentSection(
-                        title: "NCLEX Tip",
-                        content: viewModel.question.nclexTip
+                        title: "Exam tip",
+                        content: viewModel.question.exanTip
                     )
                     
                     Spacer()
@@ -62,7 +68,7 @@ struct QuestionDetailView: View {
     
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Expert Response on")
+            Text("AI Tutor Analysis")
                 .font(.title3)
                 .fontWeight(.regular)
                 .foregroundColor(ThemeConstants.secondaryText)
@@ -136,15 +142,14 @@ extension Text {
 }
 
 #Preview {
-    let sampleQuestion = QuestionBank(
-        userId: "user_001",
-        questionId: UUID(),
-        question: "What is the primary nursing intervention for a patient in hypovolemic shock?",
-        summaryAnswer: "The primary nursing intervention is rapid fluid resuscitation through IV access to restore circulating blood volume and tissue perfusion.",
-        rationale: "Hypovolemic shock occurs when the body loses blood or fluid, reducing cardiac output. Restoring fluid volume is the cornerstone of treatment to prevent organ failure and death.",
-        nclexTip: "Remember SHOCK: Stabilize airway, assess for Hemorrhage, Order fluids/blood, Control bleeding, Keep monitoring. Priority is always ABCs and fluid replacement.",
-        createdAt: Date()
-    )
+    let sampleQuestion =  QuestionBank(userId: "user_001",
+                                       questionId: UUID(),
+                                       question: "What is the primary nursing intervention for a patient in hypovolemic shock?",
+                                       decodingTechnique: "The primary nursing intervention is rapid fluid resuscitation through IV access to restore circulating blood volume and tissue perfusion.",
+                                       correctAnswer: "B",
+                                       rationale: "Hypovolemic shock occurs when the body loses blood or fluid, reducing cardiac output. Restoring fluid volume is the cornerstone of treatment to prevent organ failure and death.",
+                                       examTip: "Remember SHOCK: Stabilize airway, assess for Hemorrhage, Order fluids/blood, Control bleeding, Keep monitoring. Priority is always ABCs and fluid replacement.",
+                                       createdAt: Date())
     
     QuestionDetailView(viewModel: QuestionDetailViewModel(question: sampleQuestion))
         .modelContainer(for: QuestionBank.self, inMemory: true)
