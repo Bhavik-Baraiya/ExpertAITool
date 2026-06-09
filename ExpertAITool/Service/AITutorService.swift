@@ -1,5 +1,5 @@
 //
-//  AIExpertService.swift
+//  AITutorService.swift
 //  AskAnAIExpertTool
 //
 //  Created by Bhavik Baraiya on 26/03/26.
@@ -15,8 +15,8 @@ struct AIResponse {
     var examTip: String
 }
 
-class AIExpertService {
-    static let shared = AIExpertService()
+class AITutorService {
+    static let shared = AITutorService()
     var isLoading: Bool = false
     var error: String?
     
@@ -67,6 +67,30 @@ class AIExpertService {
         let instructions = Instructions(systemInstructions)
         self.languageModelSession = LanguageModelSession(model: model, instructions: instructions)
     }
+    
+    @objc
+    public func checkAvailability(completion: (Bool, String) -> Void) {
+        let model = SystemLanguageModel.default
+        
+        switch model.availability {
+            
+        case .available:
+            completion(true,"Model is available and ready to go!")
+            
+        case .unavailable(.deviceNotEligible):
+            completion(false,GenerativeUserError.unsupported.description)
+            
+        case .unavailable(.appleIntelligenceNotEnabled):
+            completion(false,GenerativeUserError.modelDisabled.description)
+            
+        case .unavailable(.modelNotReady):
+            completion(false,GenerativeUserError.modelNotReady.description)
+            
+        case .unavailable(_):
+            completion(false,GenerativeUserError.unknown.description)
+        }
+    }
+    
     /// Generate expert response for a given question
     /// - Parameter question: The medical/nursing question to ask
     /// - Returns: AIResponse with summaryAnswer, rationale, and nclexTip

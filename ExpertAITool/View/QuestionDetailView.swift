@@ -62,6 +62,9 @@ struct QuestionDetailView: View {
                 }
             }
         }
+        .onAppear {
+            Logger.shared.log(content: "QuestionDetailView appeared")
+        }
     }
     
     // MARK: - Subviews

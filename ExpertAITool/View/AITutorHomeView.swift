@@ -1,5 +1,5 @@
 //
-//  NCLEXExpertView.swift
+//  AITutorHomeView.swift
 //  AskAnAIExpertTool
 //
 //  Created by Bhavik Baraiya on 26/03/26.
@@ -8,14 +8,20 @@
 import SwiftUI
 import SwiftData
 
-struct NCLEXExpertView: View {
+struct AITutorHomeView: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var viewModel = NCLEXExpertViewModel()
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var viewModel = AITutorHomeViewModel()
     @State private var showInputSheet = false
     @State private var showOutputSheet = false
     @State var questionInput: String
     @State private var pulseScale: CGFloat = 1.0
     @State private var glowOpacity: Double = 0.5
+    
+    var screenTitle: String
+    let onDismiss: () -> Void
+    let presented: () -> Void
     
     var body: some View {
         ZStack {
@@ -27,8 +33,19 @@ struct NCLEXExpertView: View {
                         listView
                     }
                 }
-                .navigationTitle("CCM Tutor")
+                .navigationTitle(screenTitle)
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            Logger.shared.log(content: "AITutorHomeView dismiss button tapped")
+                            dismiss()
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.white)
+                        }
+                    }
+                }
             }
             
             // Loading overlay
@@ -47,7 +64,15 @@ struct NCLEXExpertView: View {
             }
         }
         .onAppear {
+            Logger.shared.log(content: "AITutorHomeView appeared")
             viewModel.fetchQuestions(from: modelContext)
+            presented()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0 , execute: {
+                if(!questionInput.isEmpty) {
+                    showInputSheet = true
+                }
+            })
         }
         .sheet(isPresented: $showInputSheet) {
             askQuestionSheet
@@ -109,25 +134,31 @@ struct NCLEXExpertView: View {
     }
     
     private var floatingAIButton: some View {
-        Button(action: { showInputSheet = true }) {
-            ZStack {
-                // Glow ring (pulsing when not loading)
-                if !viewModel.isLoading {
+        Button(action:
+            {
+                showInputSheet = true
+                Logger.shared.log(content: "Ask AITutor Button tapped")
+            }
+        )
+        {
+                ZStack {
+                    // Glow ring (pulsing when not loading)
+                    if !viewModel.isLoading {
+                        Circle()
+                            .stroke(ThemeConstants.primaryRed, lineWidth: 2)
+                            .opacity(glowOpacity)
+                            .scaleEffect(pulseScale)
+                    }
+                    
+                    // Main button circle
                     Circle()
-                        .stroke(ThemeConstants.primaryRed, lineWidth: 2)
-                        .opacity(glowOpacity)
-                        .scaleEffect(pulseScale)
-                }
-                
-                // Main button circle
-                Circle()
-                    .fill(ThemeConstants.primaryRed)
-                    .scaleEffect(viewModel.isLoading ? 1.1 : 1.0)
-                
-                // Icon
-                Image(systemName: "sparkles")
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundColor(.white)
+                        .fill(ThemeConstants.primaryRed)
+                        .scaleEffect(viewModel.isLoading ? 1.1 : 1.0)
+                    
+                    // Icon
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 24, weight: .semibold))
+                        .foregroundColor(.white)
             }
             .frame(width: 64, height: 64)
         }
@@ -173,14 +204,21 @@ struct NCLEXExpertView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
-                TextEditor(text: $questionInput)
-                    .font(.body)
-                    .frame(minHeight: 120)
-                    .padding(8)
-                    .background(ThemeConstants.lightThemeTint)
-                    .cornerRadius(8)
-                    .foregroundStyle(viewModel.isLoading ? ThemeConstants.secondaryText : ThemeConstants.text)
-                    .disabled(viewModel.isLoading ? true : false)
+                if questionInput.isEmpty {
+                    Text("Enter your question here...")
+                        .foregroundColor(.gray)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 8)
+                } else {
+                    TextEditor(text: $questionInput)
+                        .font(.body)
+                        .frame(minHeight: 120)
+                        .padding(8)
+                        .background(ThemeConstants.lightThemeTint)
+                        .cornerRadius(8)
+                        .foregroundStyle(viewModel.isLoading ? ThemeConstants.secondaryText : ThemeConstants.text)
+                        .disabled(viewModel.isLoading ? true : false)
+                }
                 
                 Button(action: submitQuestion) {
                     Text(viewModel.isLoading ? "Decoding..." : "Submit Question")
@@ -198,11 +236,11 @@ struct NCLEXExpertView: View {
             }
             .padding(16)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         showInputSheet = false
-                        questionInput = ""
                     }
                     .disabled(viewModel.isLoading)
                     .foregroundColor(ThemeConstants.primaryRed)
@@ -248,6 +286,10 @@ struct NCLEXExpertView: View {
 }
 
 #Preview {
-    NCLEXExpertView(questionInput: "")
+    AITutorHomeView(questionInput: "", screenTitle: "", onDismiss: {
+        
+    }, presented: {
+        
+    })
         .modelContainer(for: QuestionBank.self, inMemory: true)
 }

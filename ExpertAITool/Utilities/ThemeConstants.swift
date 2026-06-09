@@ -13,7 +13,7 @@ struct ThemeConstants {
     // MARK: - Primary Colors
     /// Primary brand color - Primary Dark Red
     /// Used for: Buttons, interactive elements, highlights
-    static let primaryRed = Color(red: 1.0, green: 59/255, blue: 48/255) // #FF3B30
+    static let primaryRed = Color(red: 0.80, green: 0.25, blue: 0.32) // #CC4052
     
     /// Accent color - Lighter red tone
     /// Used for: Borders, secondary accents, dividers

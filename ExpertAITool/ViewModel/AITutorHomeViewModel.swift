@@ -1,6 +1,6 @@
 //
-//  NCLEXExpertViewModel.swift
-//  AskAnAIExpertTool
+//  AITutorHomeViewModel.swift
+//  ExpertAITool
 //
 //  Created by Bhavik Baraiya on 26/03/26.
 //
@@ -9,13 +9,13 @@ import Foundation
 import SwiftData
 
 @Observable
-class NCLEXExpertViewModel {
+class AITutorHomeViewModel {
     var questions: [QuestionBank] = []
     var isLoading: Bool = false
     var errorMessage: String?
     var currentUserID: String = "user_001"
     
-    private let aiService = AIExpertService.shared
+    private let aiService = AITutorService.shared
     
     /// Fetch all questions from SwiftData
     func fetchQuestions(from modelContext: ModelContext) {
